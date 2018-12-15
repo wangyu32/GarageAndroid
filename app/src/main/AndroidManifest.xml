@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="garage.wangyu.com.garageandroid">
+    package="garage.wangyu.com.garageandroid.activitys">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- 网络权限 -->
     <uses-permission android:name="android.permission.VIBRATE" /> <!-- 震动权限 -->
     <uses-permission android:name="android.permission.CAMERA" /> <!-- 摄像头权限 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- 自动聚焦权限 -->
 
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <!-- 自动聚焦权限 -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,10 +18,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
 
-        </activity>
-        <activity android:name=".LoginActivity" >
+        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,7 +29,7 @@
         </activity>
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ResetpwdActivity" />
-        <activity android:name=".UserActivity"></activity>
+        <activity android:name=".UserActivity" />
     </application>
 
 </manifest>

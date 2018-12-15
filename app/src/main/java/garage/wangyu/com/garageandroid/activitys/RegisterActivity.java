@@ -1,11 +1,9 @@
-package garage.wangyu.com.garageandroid;
+package garage.wangyu.com.garageandroid.activitys;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.StrictMode;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,21 +11,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.wangyu.common.Result;
 
-import java.util.Properties;
-
+import garage.wangyu.com.garageandroid.UserDataManager;
 import garage.wangyu.com.garageandroid.dto.UserRegisterDTO;
 import garage.wangyu.com.garageandroid.enums.SexEnum;
-import garage.wangyu.com.garageandroid.util.HttpUtils;
-import garage.wangyu.com.garageandroid.util.PropertiesUtils;
-//import garage.wangyu.com.garageandroid.util.HttpRequestUtil;
 
 /**
  * 用户注册
  */
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     private EditText phoneEditText;                    //用户名编辑
     private EditText nameEditText;                     //姓名编辑
@@ -40,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private Integer sex = 0;//性别0-男;1-女
 
+
     //不同按钮按下的监听事件选择
     private View.OnClickListener m_register_Listener = new View.OnClickListener() {
         public void onClick(View v) {
@@ -48,8 +42,8 @@ public class RegisterActivity extends AppCompatActivity {
                     register_check();
                     break;
                 case R.id.register_btn_cancel:                     //取消按钮的监听事件,由注册界面返回登录界面
-                    Intent intent_Register_to_Login = new Intent(RegisterActivity.this,LoginActivity.class) ;    //切换User Activity至Login Activity
-                    startActivity(intent_Register_to_Login);
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class) ;
+                    startActivity(intent);
                     finish();
                     break;
             }
@@ -64,8 +58,16 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         StrictMode.ThreadPolicy policy=new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         phoneEditText = findViewById(R.id.register_edit_phone);
         nameEditText = findViewById(R.id.register_edit_name);
         sexRadioGroup = findViewById(R.id.register_edit_sex);
@@ -92,6 +94,17 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+//            case R.layout.activity_login:
+            case android.R.id.home:
+                this.finish(); // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
      *  确认按钮的监听事件
      */
@@ -100,6 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
         String name = this.nameEditText.getText().toString();
         String password = this.passwordEditText.getText().toString();
         String passwordConfirm = this.passwordConfirmEditText.getText().toString();
+
         UserRegisterDTO dto = new UserRegisterDTO();
         dto.setPhone(phone);
         dto.setName(name);
@@ -108,17 +122,23 @@ public class RegisterActivity extends AppCompatActivity {
         dto.setPasswordConfirm(passwordConfirm);
 
         try {
-            String url = PropertiesUtils.getProperties("serviceUrl") + "/user/register";
-            String json = HttpUtils.postJson(url, JSON.toJSONString(dto));
-            Result result = JSON.parseObject(json, Result.class);
-
+            Result result = userService.register(dto);
             if(result.isSuccess()){
-                Toast.makeText(this, result.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(RegisterActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent_Register_to_Login = new Intent(RegisterActivity.this,LoginActivity.class) ;    //切换User Activity至Login Activity
+                        startActivity(intent_Register_to_Login);
+                        finish();
+                    }
+                }, 1000);
             } else {
                 Toast.makeText(this, result.getMessage(), Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(this, "系统错误", Toast.LENGTH_SHORT).show();
         }
 
 //            String userName = phoneEditText.getText().toString().trim();
