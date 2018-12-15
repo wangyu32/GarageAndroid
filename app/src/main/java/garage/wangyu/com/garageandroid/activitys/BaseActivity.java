@@ -1,5 +1,6 @@
 package garage.wangyu.com.garageandroid.activitys;
 
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
@@ -11,4 +12,5 @@ public class BaseActivity extends AppCompatActivity {
 
     protected UserService userService = new UserService();
 
+    protected SharedPreferences login_sp;
 }

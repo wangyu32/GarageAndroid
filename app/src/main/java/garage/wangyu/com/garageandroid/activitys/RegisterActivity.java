@@ -33,7 +33,6 @@ public class RegisterActivity extends BaseActivity {
 
     private Integer sex = 0;//性别0-男;1-女
 
-
     //不同按钮按下的监听事件选择
     private View.OnClickListener m_register_Listener = new View.OnClickListener() {
         public void onClick(View v) {
@@ -97,7 +96,6 @@ public class RegisterActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-//            case R.layout.activity_login:
             case android.R.id.home:
                 this.finish(); // back button
                 return true;
@@ -140,32 +138,5 @@ public class RegisterActivity extends BaseActivity {
             e.printStackTrace();
             Toast.makeText(this, "系统错误", Toast.LENGTH_SHORT).show();
         }
-
-//            String userName = phoneEditText.getText().toString().trim();
-//            String userPwd = nameEditText.getText().toString().trim();
-//            String userPwdCheck = null; //sexRadioGroup.getText().toString().trim();
-//            //检查用户是否存在
-//            int count=mUserDataManager.findUserByName(userName);
-//            //用户已经存在时返回，给出提示文字
-//            if(count>0){
-//                Toast.makeText(this, getString(R.string.name_already_exist, userName),Toast.LENGTH_SHORT).show();
-//                return ;
-//            }
-//            if(userPwd.equals(userPwdCheck)==false){     //两次密码输入不一样
-//                Toast.makeText(this, getString(R.string.pwd_not_the_same),Toast.LENGTH_SHORT).show();
-//                return ;
-//            } else {
-//                UserData mUser = new UserData(userName, userPwd);
-//                mUserDataManager.openDataBase();
-//                long flag = mUserDataManager.insertUserData(mUser); //新建用户信息
-//                if (flag == -1) {
-//                    Toast.makeText(this, getString(R.string.register_fail),Toast.LENGTH_SHORT).show();
-//                }else{
-//                    Toast.makeText(this, getString(R.string.register_success),Toast.LENGTH_SHORT).show();
-//                    Intent intent_Register_to_Login = new Intent(RegisterActivity.this,LoginActivity.class) ;    //切换User Activity至Login Activity
-//                    startActivity(intent_Register_to_Login);
-//                    finish();
-//                }
-//            }
     }
 }

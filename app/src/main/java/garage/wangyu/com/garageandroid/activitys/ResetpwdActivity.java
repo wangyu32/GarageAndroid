@@ -1,47 +1,69 @@
 package garage.wangyu.com.garageandroid.activitys;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.os.StrictMode;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import garage.wangyu.com.garageandroid.UserData;
-import garage.wangyu.com.garageandroid.UserDataManager;
+import com.wangyu.common.Result;
 
-public class ResetpwdActivity extends AppCompatActivity {
-    private EditText mAccount;                        //用户名编辑
-    private EditText mPwd_old;                            //密码编辑
-    private EditText mPwd_new;                            //密码编辑
-    private EditText mPwdCheck;                       //密码编辑
+import garage.wangyu.com.garageandroid.dto.UserChangePasswordDTO;
+import garage.wangyu.com.garageandroid.dto.UserLoginDTO;
+
+/**
+ * 修改密码
+ */
+public class ResetpwdActivity extends BaseActivity {
+
+    private EditText phoneEditText;                    //用户名编辑
+    private EditText passwordOldEditText;            //旧密码编辑
+    private EditText passwordNewEditText;            //新密码编辑
+    private EditText passwordNewConfirmEditText;    //确认新密码编辑
+
     private Button mSureButton;                       //确定按钮
     private Button mCancelButton;                     //取消按钮
-    private UserDataManager mUserDataManager;         //用户数据管理类
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resetpwd);
-//        layout.setOrientation(RelativeLayout.VERTICAL).
-        mAccount = (EditText) findViewById(R.id.resetpwd_edit_name);
-        mPwd_old = (EditText) findViewById(R.id.resetpwd_edit_pwd_old);
-        mPwd_new = (EditText) findViewById(R.id.resetpwd_edit_pwd_new);
-        mPwdCheck = (EditText) findViewById(R.id.resetpwd_edit_pwd_check);
+
+        phoneEditText = (EditText) findViewById(R.id.resetpwd_edit_phone);
+        passwordOldEditText = (EditText) findViewById(R.id.resetpwd_edit_password_old);
+        passwordNewEditText = (EditText) findViewById(R.id.resetpwd_edit_password_new);
+        passwordNewConfirmEditText = (EditText) findViewById(R.id.resetpwd_edit_password_new_confirm);
 
         mSureButton = (Button) findViewById(R.id.resetpwd_btn_sure);
         mCancelButton = (Button) findViewById(R.id.resetpwd_btn_cancel);
 
         mSureButton.setOnClickListener(m_resetpwd_Listener);      //注册界面两个按钮的监听事件
         mCancelButton.setOnClickListener(m_resetpwd_Listener);
-        //mCancelButton.setOnClickListener(m_resetpwd_Listener);
 
-        if (mUserDataManager == null) {
-            mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();                              //建立本地数据库
+        login_sp = getSharedPreferences("userInfo", 0);
+        String phone = login_sp.getString("USER_NAME", "");
+        String password = login_sp.getString("PASSWORD", "");
+        UserLoginDTO dto = new UserLoginDTO();
+        dto.setPhone(phone);
+        dto.setPassword(password);
+        try {
+            //如果有登录信息了，直接跳到主页
+            Result result = userService.login(dto);
+            if (result.isSuccess()) {
+                phoneEditText.setText(phone);
+                passwordOldEditText.setText(password);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "系统错误", Toast.LENGTH_SHORT).show();
         }
-
     }
+
     View.OnClickListener m_resetpwd_Listener = new View.OnClickListener() {    //不同按钮按下的监听事件选择
         public void onClick(View v) {
             switch (v.getId()) {
@@ -56,66 +78,64 @@ public class ResetpwdActivity extends AppCompatActivity {
             }
         }
     };
+
     public void resetpwd_check() {                                //确认按钮的监听事件
-        if (isUserNameAndPwdValid()) {
-            String userName = mAccount.getText().toString().trim();
-            String userPwd_old = mPwd_old.getText().toString().trim();
-            String userPwd_new = mPwd_new.getText().toString().trim();
-            String userPwdCheck = mPwdCheck.getText().toString().trim();
-            int result=mUserDataManager.findUserByNameAndPwd(userName, userPwd_old);
-            if(result==1){                                             //返回1说明用户名和密码均正确,继续后续操作
-                if(userPwd_new.equals(userPwdCheck)==false){           //两次密码输入不一样
-                    Toast.makeText(this, getString(R.string.pwd_not_the_same),Toast.LENGTH_SHORT).show();
-                    return ;
-                } else {
-                    UserData mUser = new UserData(userName, userPwd_new);
-                    mUserDataManager.openDataBase();
-                    boolean flag = mUserDataManager.updateUserData(mUser);
-                    if (flag == false) {
-                        Toast.makeText(this, getString(R.string.resetpwd_fail),Toast.LENGTH_SHORT).show();
-                    }else{
+        String phone = phoneEditText.getText().toString().trim();
+        String passworOld = passwordOldEditText.getText().toString().trim();
+        String passworNew = passwordNewEditText.getText().toString().trim();
+        String passworNewConfirm = passwordNewConfirmEditText.getText().toString().trim();
 
-                        Toast.makeText(this, getString(R.string.resetpwd_success),Toast.LENGTH_SHORT).show();
+        UserChangePasswordDTO dto = new UserChangePasswordDTO();
+        dto.setPhone(phone);
+        dto.setOldPassword(passworOld);
+        dto.setNewPassword(passworNew);
+        dto.setNewPasswordConfirm(passworNewConfirm);
 
-                        mUser.pwdresetFlag=1;
-                        Intent intent_Register_to_Login = new Intent(ResetpwdActivity.this,LoginActivity.class) ;    //切换User Activity至Login Activity
-                        startActivity(intent_Register_to_Login);
-                        finish();
-                    }
-                }
-            }else if(result==0){                                       //返回0说明用户名和密码不匹配，重新输入
-                Toast.makeText(this, getString(R.string.pwd_not_fit_user),Toast.LENGTH_SHORT).show();
-                return;
+        try {
+            Result result = userService.changePassword(dto);
+            if(result.isSuccess()){
+                Toast.makeText(ResetpwdActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Intent intent_Register_to_Login = new Intent(ResetpwdActivity.this,LoginActivity.class) ;    //切换User Activity至Login Activity
+//                        startActivity(intent_Register_to_Login);
+//                        finish();
+//                    }
+//                }, 1000);
+            } else {
+                Toast.makeText(this, result.getMessage(), Toast.LENGTH_SHORT).show();
             }
-
-
-
-
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "系统错误", Toast.LENGTH_SHORT).show();
         }
-    }
-    public boolean isUserNameAndPwdValid() {
-        String userName = mAccount.getText().toString().trim();
-        //检查用户是否存在
-        int count=mUserDataManager.findUserByName(userName);
-        //用户不存在时返回，给出提示文字
-        if(count<=0){
-            Toast.makeText(this, getString(R.string.name_not_exist, userName),Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (mAccount.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getString(R.string.account_empty),Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (mPwd_old.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getString(R.string.pwd_empty),Toast.LENGTH_SHORT).show();
-            return false;
-        } else if (mPwd_new.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getString(R.string.pwd_new_empty),Toast.LENGTH_SHORT).show();
-            return false;
-        }else if(mPwdCheck.getText().toString().trim().equals("")) {
-            Toast.makeText(this, getString(R.string.pwd_check_empty),Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
+
+//            int result=mUserDataManager.findUserByNameAndPwd(userName, userPwd_old);
+//            if(result==1){                                             //返回1说明用户名和密码均正确,继续后续操作
+//                if(userPwd_new.equals(userPwdCheck)==false){           //两次密码输入不一样
+//                    Toast.makeText(this, getString(R.string.pwd_not_the_same),Toast.LENGTH_SHORT).show();
+//                    return ;
+//                } else {
+//                    UserData mUser = new UserData(userName, userPwd_new);
+//                    mUserDataManager.openDataBase();
+//                    boolean flag = mUserDataManager.updateUserData(mUser);
+//                    if (flag == false) {
+//                        Toast.makeText(this, getString(R.string.resetpwd_fail),Toast.LENGTH_SHORT).show();
+//                    }else{
+//
+//                        Toast.makeText(this, getString(R.string.resetpwd_success),Toast.LENGTH_SHORT).show();
+//
+//                        mUser.pwdresetFlag=1;
+//                        Intent intent_Register_to_Login = new Intent(ResetpwdActivity.this,LoginActivity.class) ;    //切换User Activity至Login Activity
+//                        startActivity(intent_Register_to_Login);
+//                        finish();
+//                    }
+//                }
+//            }else if(result==0){                                       //返回0说明用户名和密码不匹配，重新输入
+//                Toast.makeText(this, getString(R.string.pwd_not_fit_user),Toast.LENGTH_SHORT).show();
+//                return;
+//            }
     }
 
 }
