@@ -40,10 +40,8 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Vector;
 
-import demo.com.wangyu.helloworld.R;
-import demo.com.wangyu.helloworld.util.Constant;
-import demo.com.wangyu.helloworld.util.UriUtil;
-
+import garage.wangyu.com.garageandroid.constants.Constant;
+import garage.wangyu.com.garageandroid.util.UriUtil;
 
 /**
  * Initial the camera

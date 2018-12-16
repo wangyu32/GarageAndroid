@@ -1,6 +1,5 @@
 package garage.wangyu.com.garageandroid.activitys;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 /**

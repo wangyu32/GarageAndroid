@@ -32,7 +32,8 @@
         <activity android:name=".ComeinQrCodeActivity" />
         <activity android:name=".ComeoutQrCodeActivity" />
         <activity android:name=".ComeinScanActivity" />
-        <activity android:name=".ComeoutScanActivity"></activity>
+        <activity android:name=".ComeoutScanActivity" />
+        <activity android:name="com.google.zxing.activity.CaptureActivity"/>
     </application>
 
 </manifest>

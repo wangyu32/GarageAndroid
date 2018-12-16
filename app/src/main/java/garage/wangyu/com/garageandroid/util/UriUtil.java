@@ -1,4 +1,4 @@
-package demo.com.wangyu.helloworld.util;
+package garage.wangyu.com.garageandroid.util;
 
 import android.annotation.TargetApi;
 import android.content.Context;

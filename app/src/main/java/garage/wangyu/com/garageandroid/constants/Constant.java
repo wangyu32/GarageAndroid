@@ -1,4 +1,4 @@
-package demo.com.wangyu.helloworld.util;
+package garage.wangyu.com.garageandroid.constants;
 
 /**
  * 常量
