@@ -17,7 +17,7 @@ public class HttpUtils {
 
             URL url0 = new URL(url);
 
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url0.openConnection();
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url0.openConnection();
             httpURLConnection.setConnectTimeout(3000);     //设置连接超时时间
             httpURLConnection.setDoInput(true);                  //打开输入流，以便从服务器获取数据
             httpURLConnection.setDoOutput(true);                 //打开输出流，以便向服务器提交数据
@@ -32,13 +32,13 @@ public class HttpUtils {
             outputStream.write(data);
 
             int response = httpURLConnection.getResponseCode();            //获得服务器的响应码
-            if(response == HttpURLConnection.HTTP_OK) {
+            if (response == HttpURLConnection.HTTP_OK) {
                 InputStream inptStream = httpURLConnection.getInputStream();
                 return dealResponseResult(inptStream);                     //处理服务器的响应结果
             }
         } catch (IOException e) {
             throw e;
-        } catch (Exception e){
+        } catch (Exception e) {
             throw e;
         }
         return null;
@@ -48,16 +48,16 @@ public class HttpUtils {
      * Function  :   发送Post请求到服务器
      * Param     :   params请求体内容，encode编码格式
      */
-    public static String submitPostData(String strUrlPath,Map<String, String> params) {
+    public static String submitPostData(String strUrlPath, Map<String, String> params) throws Exception {
         return submitPostData(strUrlPath, params, "utf-8");
     }
 
-    public static String submitPostData(String strUrlPath,Map<String, String> params, String encode) {
+    public static String submitPostData(String strUrlPath, Map<String, String> params, String encode) throws Exception {
         try {
             byte[] data = getRequestData(params, encode).toString().getBytes();//获得请求体
             URL url = new URL(strUrlPath);
 
-            HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setConnectTimeout(3000);     //设置连接超时时间
             httpURLConnection.setDoInput(true);                  //打开输入流，以便从服务器获取数据
             httpURLConnection.setDoOutput(true);                 //打开输出流，以便向服务器提交数据
@@ -72,15 +72,14 @@ public class HttpUtils {
             outputStream.write(data);
 
             int response = httpURLConnection.getResponseCode();            //获得服务器的响应码
-            if(response == HttpURLConnection.HTTP_OK) {
+            if (response == HttpURLConnection.HTTP_OK) {
                 InputStream inptStream = httpURLConnection.getInputStream();
                 return dealResponseResult(inptStream);                     //处理服务器的响应结果
             }
-        } catch (IOException e) {
-            //e.printStackTrace();
-            return "err: " + e.getMessage().toString();
+        } catch (Exception e) {
+            throw e;
         }
-        return "-1";
+        return null;
     }
 
     public static StringBuffer getRequestData(String json, String encode) {
@@ -100,7 +99,7 @@ public class HttpUtils {
     public static StringBuffer getRequestData(Map<String, String> params, String encode) {
         StringBuffer stringBuffer = new StringBuffer();        //存储封装好的请求体信息
         try {
-            for(Map.Entry<String, String> entry : params.entrySet()) {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
                 stringBuffer.append(entry.getKey())
                         .append("=")
                         .append(URLEncoder.encode(entry.getValue(), encode))
@@ -123,7 +122,7 @@ public class HttpUtils {
         byte[] data = new byte[1024];
         int len = 0;
         try {
-            while((len = inputStream.read(data)) != -1) {
+            while ((len = inputStream.read(data)) != -1) {
                 byteArrayOutputStream.write(data, 0, len);
             }
         } catch (IOException e) {

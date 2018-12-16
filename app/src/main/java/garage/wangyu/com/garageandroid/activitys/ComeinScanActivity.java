@@ -12,9 +12,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.zxing.activity.CaptureActivity;
+import com.wangyu.common.Result;
 
 import garage.wangyu.com.garageandroid.constants.Constant;
+import garage.wangyu.com.garageandroid.dto.UserComeInDTO;
+import garage.wangyu.com.garageandroid.entity.User;
+import garage.wangyu.com.garageandroid.util.HttpUtils;
+import garage.wangyu.com.garageandroid.util.NullUtil;
 
 /**
  * 入库扫描
@@ -30,6 +37,19 @@ public class ComeinScanActivity extends BaseActivity implements View.OnClickList
         setContentView(R.layout.activity_comein_scan);
 
         initView();
+
+        login_sp = getSharedPreferences("userInfo", 0);
+        if(login_sp == null || NullUtil.isNull(login_sp.getString("USER_NAME", ""))){
+            Toast.makeText(this, "请先登录系统", Toast.LENGTH_SHORT).show();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Intent intent = new Intent(ComeinScanActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }, 1000);
+        }
     }
 
     private void initView() {
@@ -66,9 +86,29 @@ public class ComeinScanActivity extends BaseActivity implements View.OnClickList
         //扫描结果回调
         if (requestCode == Constant.REQ_QR_CODE && resultCode == RESULT_OK) {
             Bundle bundle = data.getExtras();
-            String scanResult = bundle.getString(Constant.INTENT_EXTRA_KEY_QR_SCAN);
-            //将扫描出的信息显示出来
-            scanResultTextView.setText(scanResult);
+            String url = bundle.getString(Constant.INTENT_EXTRA_KEY_QR_SCAN);
+
+            String phone = login_sp.getString("USER_NAME", "");
+            try {
+                Result result = userService.getUserByPhone(phone);
+                JSONObject user = (JSONObject)result.getData();
+                UserComeInDTO dto = new UserComeInDTO();
+                dto.setGarageId(userService.getGarageId());
+                dto.setUserId(Long.valueOf(user.get("id").toString()));
+
+                String json = HttpUtils.postJson(url, JSON.toJSONString(dto));
+                result = JSON.parseObject(json, Result.class);
+                if(result.isSuccess()){
+                    //将扫描出的信息显示出来
+//                    StopRecording stopRecording = JSONObject.parseObject(result.getData(), StopRecording.class);
+                    scanResultTextView.setText(JSON.toJSONString(result.getData()));
+                } else {
+                    scanResultTextView.setText(result.getMessage());
+                }
+            } catch (Exception e){
+                Toast.makeText(this, "系统错误", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
         }
     }
 

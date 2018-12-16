@@ -33,7 +33,7 @@ public class ComeinQrCodeActivity extends BaseActivity {
 
         login_sp = getSharedPreferences("userInfo", 0);
         if(login_sp == null || NullUtil.isNull(login_sp.getString("USER_NAME", ""))){
-            Toast.makeText(ComeinQrCodeActivity.this, "请先登录系统", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "请先登录系统", Toast.LENGTH_SHORT).show();
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {

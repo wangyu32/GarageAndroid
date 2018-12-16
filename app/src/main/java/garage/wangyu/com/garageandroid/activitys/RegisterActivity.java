@@ -87,10 +87,10 @@ public class RegisterActivity extends BaseActivity {
         sureButton.setOnClickListener(m_register_Listener);
         cancelButton.setOnClickListener(m_register_Listener);
 
-        if (mUserDataManager == null) {
-            mUserDataManager = new UserDataManager(this);
-            mUserDataManager.openDataBase();                              //建立本地数据库
-        }
+//        if (mUserDataManager == null) {
+//            mUserDataManager = new UserDataManager(this);
+//            mUserDataManager.openDataBase();                              //建立本地数据库
+//        }
     }
 
     @Override

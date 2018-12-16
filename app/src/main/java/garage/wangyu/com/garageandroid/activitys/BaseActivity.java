@@ -13,4 +13,5 @@ public class BaseActivity extends AppCompatActivity {
     protected UserService userService = new UserService();
 
     protected SharedPreferences login_sp;
+
 }

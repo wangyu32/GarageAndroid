@@ -6,6 +6,13 @@ import android.os.StrictMode;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.alibaba.fastjson.JSONObject;
+import com.wangyu.common.Result;
+
+import garage.wangyu.com.garageandroid.entity.User;
+import garage.wangyu.com.garageandroid.enums.UserEnum;
 
 /**
  * 主页：入库码，出库码，扫描入库，扫描出库
@@ -32,6 +39,19 @@ public class MainActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        Integer userTpye = null;
+
+        try {
+            login_sp = getSharedPreferences("userInfo", 0);
+            String phone = login_sp.getString("USER_NAME", "");
+            Result result = userService.getUserByPhone(phone);
+            User user = userService.convertJSONObjectToUser((JSONObject) result.getData());
+            userTpye = user.getType();
+        } catch (Exception e) {
+            Toast.makeText(this, "系统错误", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+
         mainComeinQrButton = findViewById(R.id.main_comein_qr_btn);
         mainComeoutQrButton = findViewById(R.id.main_comeout_qr_btn);
         mainComeinScanButton = findViewById(R.id.main_comein_scan_btn);
@@ -39,9 +59,15 @@ public class MainActivity extends BaseActivity {
         mainBackButton = findViewById(R.id.main_back_btn);
 
         setListeners();
+
+        if (UserEnum.ADMIN != UserEnum.getByCode(userTpye)) {
+            //不是管理员，隐藏出库，入库二维码按钮
+            mainComeinQrButton.setVisibility(View.INVISIBLE);//表示隐藏
+            mainComeoutQrButton.setVisibility(View.INVISIBLE);//表示隐藏
+        }
     }
 
-    public void setListeners(){
+    public void setListeners() {
         OnClick onClick = new OnClick();
         mainComeinQrButton.setOnClickListener(onClick);
         mainComeoutQrButton.setOnClickListener(onClick);
@@ -50,12 +76,12 @@ public class MainActivity extends BaseActivity {
         mainBackButton.setOnClickListener(onClick);
     }
 
-    public class OnClick implements View.OnClickListener{
+    public class OnClick implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             //跳转到
             Intent intent = null;
-            switch (v.getId()){
+            switch (v.getId()) {
                 case R.id.main_comein_qr_btn:
                     intent = new Intent(MainActivity.this, ComeinQrCodeActivity.class);
                     break;

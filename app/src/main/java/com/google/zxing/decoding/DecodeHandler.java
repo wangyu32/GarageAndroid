@@ -34,7 +34,7 @@ import com.google.zxing.common.HybridBinarizer;
 
 import java.util.Hashtable;
 
-import demo.com.wangyu.helloworld.R;
+import garage.wangyu.com.garageandroid.activitys.R;
 
 
 final class DecodeHandler extends Handler {

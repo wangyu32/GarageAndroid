@@ -29,7 +29,7 @@
             app:mask_color="@color/viewfinder_mask"
             app:result_color="@color/result_view"
             app:result_point_color="@color/result_point_color" />
-<!--
+
         <ImageButton
             android:id="@+id/btn_flash"
             android:layout_width="40dip"
@@ -40,7 +40,7 @@
             android:background="?attr/selectableItemBackground"
             android:scaleType="centerInside"
             android:src="@drawable/flash_off" />
--->
+        <!--  -->
 
     </FrameLayout>
 </LinearLayout>
