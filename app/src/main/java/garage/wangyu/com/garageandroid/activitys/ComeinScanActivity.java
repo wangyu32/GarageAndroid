@@ -17,8 +17,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.google.zxing.activity.CaptureActivity;
 import com.wangyu.common.Result;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import garage.wangyu.com.garageandroid.constants.Constant;
 import garage.wangyu.com.garageandroid.dto.UserComeInDTO;
+import garage.wangyu.com.garageandroid.entity.StopRecording;
 import garage.wangyu.com.garageandroid.entity.User;
 import garage.wangyu.com.garageandroid.util.HttpUtils;
 import garage.wangyu.com.garageandroid.util.NullUtil;
@@ -88,22 +93,38 @@ public class ComeinScanActivity extends BaseActivity implements View.OnClickList
             Bundle bundle = data.getExtras();
             String url = bundle.getString(Constant.INTENT_EXTRA_KEY_QR_SCAN);
 
+            if(!url.equals(userService.getComeinQrCodeUrl())){
+                scanResultTextView.setText("入库二维码错误");
+                return;
+            }
+
             String phone = login_sp.getString("USER_NAME", "");
             try {
                 Result result = userService.getUserByPhone(phone);
-                JSONObject user = (JSONObject)result.getData();
+                User user = userService.convertJSONObjectToUser((JSONObject)result.getData());
                 UserComeInDTO dto = new UserComeInDTO();
                 dto.setGarageId(userService.getGarageId());
-                dto.setUserId(Long.valueOf(user.get("id").toString()));
+                dto.setUserId(user.getId());
 
                 String json = HttpUtils.postJson(url, JSON.toJSONString(dto));
                 result = JSON.parseObject(json, Result.class);
+                DateFormat formator = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 if(result.isSuccess()){
                     //将扫描出的信息显示出来
-//                    StopRecording stopRecording = JSONObject.parseObject(result.getData(), StopRecording.class);
-                    scanResultTextView.setText(JSON.toJSONString(result.getData()));
+                    StopRecording stopRedcording = userService.convertJSONObjectToStopRecording((JSONObject)result.getData());
+                    StringBuffer sb = new StringBuffer();
+                    sb.append("入库状态：").append("入库成功").append("\n");
+                    sb.append("用户姓名：").append(user.getName()).append("\n");
+                    sb.append("手机号码：").append(user.getPhone()).append("\n");
+                    sb.append("入库时间：").append(formator.format(stopRedcording.getIntime())).append("\n");
+                    String stopRedcordingView = sb.toString();
+                    scanResultTextView.setText(stopRedcordingView);
                 } else {
-                    scanResultTextView.setText(result.getMessage());
+                    StringBuffer sb = new StringBuffer();
+                    sb.append("入库状态：").append("入库失败：").append(result.getMessage()).append("\n");
+                    sb.append("用户姓名：").append(user.getName()).append("\n");
+                    sb.append("手机号码：").append(user.getPhone()).append("\n");
+                    scanResultTextView.setText(sb.toString());
                 }
             } catch (Exception e){
                 Toast.makeText(this, "系统错误", Toast.LENGTH_SHORT).show();

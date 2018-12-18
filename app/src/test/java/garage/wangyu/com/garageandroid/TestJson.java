@@ -13,21 +13,22 @@ import java.util.Date;
 import garage.wangyu.com.garageandroid.entity.StopRecording;
 import garage.wangyu.com.garageandroid.service.UserService;
 
-import static org.junit.Assert.*;
-
 /**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * @Description
+ * @Author wangyu
+ * @Date 2018/12/19 0:50
  */
-public class ExampleUnitTest {
+public class TestJson {
 
+    protected static UserService userService = new UserService();
+
+    public static void main(String[] args) {
+
+    }
 
     @Test
-    public void addition_isCorrect() {
-//        assertEquals(4, 2 + 2);？
-
-        String json = "{\"success\":true,\"code\":\"0\",\"message\":null,\"data\":{\"id\":18,\"garageid\":1,\"userid\":9,\"carNumber\":null,\"phone\":\"13900090009\",\"intime\":1544951383000,\"outtime\":1545143763067,\"totaltime\":8995,\"amount\":384760.134,\"status\":1}}";
+    public void test1() {
+        String json = "{\"success\":true,\"code\":\"0\",\"message\":null,\"data\":{\"id\":18,\"garageid\":1,\"userid\":9,\"carNumber\":null,\"phone\":\"13900090009\",\"intime\":1544951383000,\"outtime\":1545143763067,\"totaltime\":1799,\"amount\":384760.134,\"status\":1}}";
 
         Result result = JSON.parseObject(json, Result.class);
         DateFormat formator = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -35,10 +36,12 @@ public class ExampleUnitTest {
             //将扫描出的信息显示出来
             StopRecording stopRedcording = null;
             try {
-                stopRedcording = convertJSONObjectToStopRecording((JSONObject)result.getData());
+                stopRedcording = userService.convertJSONObjectToStopRecording((JSONObject)result.getData());
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            Date inTime = stopRedcording.getIntime();
+            Date outTime = stopRedcording.getOuttime();
 
             StringBuffer sb = new StringBuffer();
             sb.append("状    态：").append("出库成功").append("\n");
@@ -58,12 +61,14 @@ public class ExampleUnitTest {
         }
 
     }
-
-    private String getDateDiff4Chinese(long diff) {
+    private static String getDateDiff4Chinese(long diff) {
         long nd = 1000 * 24 * 60 * 60;
         long nh = 1000 * 60 * 60;
         long nm = 1000 * 60;
         long ns = 1000 ;
+        // long ns = 1000;
+        // 获得两个时间的毫秒时间差异
+//        long diff = endDate.getTime() - nowDate.getTime();
         // 计算差多少天
         long day = diff / nd;
         // 计算差多少小时
@@ -71,10 +76,10 @@ public class ExampleUnitTest {
         // 计算差多少分钟
         long min = diff % nd % nh / nm;
 
-        long second = diff % nd % nh % nm / ns;
+        long second = diff % nd % nh % ns / nm;
 
         // 总计多少小时
-        long totalHour = new Double(Math.ceil(diff / (nh * 1.0d))).longValue();
+        long totalHour = new Double(Math.ceil(diff / nh)).longValue();
 
         StringBuffer sb = new StringBuffer();
         sb.append(totalHour).append("小时");
@@ -96,26 +101,4 @@ public class ExampleUnitTest {
         sb.append(")");
         return sb.toString();
     }
-
-    public StopRecording convertJSONObjectToStopRecording(JSONObject jsonObject) throws Exception {
-        try {
-            if (jsonObject == null)
-                return null;
-            StopRecording bean = new StopRecording();
-            bean.setId(jsonObject.getLong("id"));
-            bean.setGarageid(jsonObject.getLong("garageid"));
-            bean.setUserid(jsonObject.getLong("userid"));
-            bean.setCarNumber(jsonObject.getString("carNumber"));
-            bean.setPhone(jsonObject.getString("phone"));
-            bean.setIntime(jsonObject.getDate("intime"));
-            bean.setOuttime(jsonObject.getDate("outtime"));
-            bean.setStatus(jsonObject.getInteger("status"));
-            bean.setTotaltime(jsonObject.getLong("totaltime"));
-            bean.setAmount(jsonObject.getBigDecimal("amount"));
-            return bean;
-        } catch (Exception e) {
-            throw e;
-        }
-    }
-
 }

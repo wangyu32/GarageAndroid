@@ -45,7 +45,7 @@ public class ComeinQrCodeActivity extends BaseActivity {
         }
 
         int width = 300;
-        Bitmap bitmap = QRCodeUtil.createQRCodeBitmap(userService.getComeinQrCode(), width, width);
+        Bitmap bitmap = QRCodeUtil.createQRCodeBitmap(userService.getComeinQrCodeUrl(), width, width);
         imageView.setImageBitmap(bitmap);
     }
 

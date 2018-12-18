@@ -1,6 +1,5 @@
 package garage.wangyu.com.garageandroid.service;
 
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.wangyu.common.Result;
@@ -10,7 +9,9 @@ import garage.wangyu.com.garageandroid.dto.UserComeInDTO;
 import garage.wangyu.com.garageandroid.dto.UserLoginDTO;
 import garage.wangyu.com.garageandroid.dto.UserQueryDTO;
 import garage.wangyu.com.garageandroid.dto.UserRegisterDTO;
+import garage.wangyu.com.garageandroid.entity.StopRecording;
 import garage.wangyu.com.garageandroid.entity.User;
+import garage.wangyu.com.garageandroid.enums.CarStatusEnum;
 import garage.wangyu.com.garageandroid.util.HttpUtils;
 import garage.wangyu.com.garageandroid.util.PropertiesUtils;
 
@@ -123,7 +124,7 @@ public class UserService {
      *
      * @return
      */
-    public String getComeinQrCode() {
+    public String getComeinQrCodeUrl() {
         return COME_IN_QR_CODE;
     }
 
@@ -132,7 +133,7 @@ public class UserService {
      *
      * @return
      */
-    public String getComeoutQrCode() {
+    public String getComeoutQrCodeUrl() {
         return COME_OUT_QR_CODE;
     }
 
@@ -154,22 +155,45 @@ public class UserService {
         }
     }
 
-    public User convertJSONObjectToUser(JSONObject user) throws Exception {
+    public User convertJSONObjectToUser(JSONObject jsonObject) throws Exception {
         try {
-            if (user == null)
+            if (jsonObject == null)
                 return null;
             User user1 = new User();
-            user1.setId(user.getLong("id"));
-            user1.setName(user.getString("name"));
-            user1.setSex(user.getInteger("sex"));
-            user1.setPhone(user.getString("phone"));
-            user1.setType(user.getInteger("type"));
-            user1.setPrice(user.getBigDecimal("price"));
-            user1.setCreatetime(user.getDate("createtime"));
+            user1.setId(jsonObject.getLong("id"));
+            user1.setName(jsonObject.getString("name"));
+            user1.setSex(jsonObject.getInteger("sex"));
+            user1.setPhone(jsonObject.getString("phone"));
+            user1.setPassword(jsonObject.getString("password"));
+            user1.setType(jsonObject.getInteger("type"));
+            user1.setPrice(jsonObject.getBigDecimal("price"));
+            user1.setCreatetime(jsonObject.getDate("createtime"));
             return user1;
         } catch (Exception e) {
             throw e;
         }
     }
 
+    public StopRecording convertJSONObjectToStopRecording(JSONObject jsonObject) throws Exception {
+        try {
+            if (jsonObject == null)
+                return null;
+            StopRecording bean = new StopRecording();
+            bean.setId(jsonObject.getLong("id"));
+            bean.setGarageid(jsonObject.getLong("garageid"));
+            bean.setUserid(jsonObject.getLong("userid"));
+            bean.setCarNumber(jsonObject.getString("carNumber"));
+            bean.setPhone(jsonObject.getString("phone"));
+            bean.setIntime(jsonObject.getDate("intime"));
+            bean.setOuttime(jsonObject.getDate("outtime"));
+            bean.setTotaltime(jsonObject.getLong("totaltime"));
+            bean.setStatus(jsonObject.getInteger("status"));
+            bean.setAmount(jsonObject.getBigDecimal("amount"));
+            return bean;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    //TODO 查询停车记录
 }

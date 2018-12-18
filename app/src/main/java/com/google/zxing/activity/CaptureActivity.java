@@ -92,8 +92,8 @@ public class CaptureActivity extends AppCompatActivity implements Callback {
         btnFlash = (ImageButton) findViewById(R.id.btn_flash);
         btnFlash.setOnClickListener(flashListener);
 
-//        btnAlbum = (Button) findViewById(R.id.btn_album);
-//        btnAlbum.setOnClickListener(albumOnClick);
+        btnAlbum = (Button) findViewById(R.id.btn_album);
+        btnAlbum.setOnClickListener(albumOnClick);
 
 //		cancelScanButton = (Button) this.findViewById(R.id.btn_cancel_scan);
         hasSurface = false;

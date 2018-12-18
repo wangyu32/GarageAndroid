@@ -31,6 +31,7 @@
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 <!--
+-->
         <Button
             android:id="@+id/btn_album"
             android:layout_width="40dip"
@@ -41,6 +42,5 @@
             android:background="?attr/selectableItemBackground"
             android:text="相册"
             android:textColor="@android:color/white" />
--->
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

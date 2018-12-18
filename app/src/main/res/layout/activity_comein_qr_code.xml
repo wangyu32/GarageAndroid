@@ -15,6 +15,16 @@
         android:layout_centerInParent="true"
         >
 
+        <TextView
+            android:id="@+id/comein_rq_code_title"
+            android:layout_width="400dp"
+            android:layout_height="50dp"
+            android:text="入库二维码"
+            android:textSize="30dp"
+            android:textColor="#00ff00"
+            android:gravity="center_horizontal"
+            />
+
         <ImageView
             android:layout_width="300dp"
             android:layout_height="300dp"
@@ -23,8 +33,9 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="#ffffff" />
+            android:background="#ffffff"
+            android:layout_below="@+id/comein_rq_code_title"
+            />
 
         <Button
             android:layout_width="fill_parent"
