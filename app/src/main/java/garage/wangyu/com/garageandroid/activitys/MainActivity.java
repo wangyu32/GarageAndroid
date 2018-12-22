@@ -24,6 +24,7 @@ public class MainActivity extends BaseActivity {
     private Button mainComeinScanButton;    //扫描入库按钮
     private Button mainComeoutScanButton;   //扫描出库按钮
     private Button mainBackButton;      //返回按钮
+    private Button mainStopRecordingButton;      //返回按钮
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class MainActivity extends BaseActivity {
         mainComeinScanButton = findViewById(R.id.main_comein_scan_btn);
         mainComeoutScanButton = findViewById(R.id.main_comeout_scan_btn);
         mainBackButton = findViewById(R.id.main_back_btn);
+        mainStopRecordingButton = findViewById(R.id.main_stop_recording_btn);
 
         setListeners();
 
@@ -74,6 +76,7 @@ public class MainActivity extends BaseActivity {
         mainComeinScanButton.setOnClickListener(onClick);
         mainComeoutScanButton.setOnClickListener(onClick);
         mainBackButton.setOnClickListener(onClick);
+        mainStopRecordingButton.setOnClickListener(onClick);
     }
 
     public class OnClick implements View.OnClickListener {
@@ -96,6 +99,9 @@ public class MainActivity extends BaseActivity {
                     break;
                 case R.id.main_back_btn:
                     intent = new Intent(MainActivity.this, LoginActivity.class);
+                    break;
+                case R.id.main_stop_recording_btn:
+                    intent = new Intent(MainActivity.this, StopRecordingActivity.class);
                     break;
             }
             startActivity(intent);

@@ -1,8 +1,14 @@
 package garage.wangyu.com.garageandroid.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.wangyu.common.Result;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import garage.wangyu.com.garageandroid.dto.UserChangePasswordDTO;
 import garage.wangyu.com.garageandroid.dto.UserComeInDTO;
@@ -12,6 +18,7 @@ import garage.wangyu.com.garageandroid.dto.UserRegisterDTO;
 import garage.wangyu.com.garageandroid.entity.StopRecording;
 import garage.wangyu.com.garageandroid.entity.User;
 import garage.wangyu.com.garageandroid.enums.CarStatusEnum;
+import garage.wangyu.com.garageandroid.parameter.StopRecordingQueryParameter;
 import garage.wangyu.com.garageandroid.util.HttpUtils;
 import garage.wangyu.com.garageandroid.util.PropertiesUtils;
 
@@ -40,6 +47,9 @@ public class UserService {
 
     //出库二维码
     public static String COME_OUT_QR_CODE = SERVICE_URL + "/garage/comeout";
+
+    //出库二维码
+    public static String STOP_RECORDING = SERVICE_URL + "/garage/queryStopRecording";
 
     /**
      * 获取车库ID
@@ -195,5 +205,79 @@ public class UserService {
         }
     }
 
-    //TODO 查询停车记录
+    /**
+     * 查询停车记录
+     */
+    public List<StopRecording> queryStopRecodingList(StopRecordingQueryParameter parameter) throws Exception{
+        try {
+            Map<String, String> map = new HashMap<>();
+            map.put("userid", parameter.getUserid().toString());
+            map.put("garageid", parameter.getGarageid().toString());
+            map.put("status", parameter.getStatus().toString());
+            String json = HttpUtils.get(STOP_RECORDING, map);
+            Result result = JSON.parseObject(json, Result.class);
+            List<StopRecording> list = new ArrayList<>();
+            if(result.isSuccess()){
+                JSONArray jsonArray = (JSONArray)result.getData();
+                for(Object object : jsonArray){
+                    JSONObject jsonObject = (JSONObject)object;
+                    list.add(convertJSONObjectToStopRecording(jsonObject));
+                }
+            }
+            return list;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        UserService userService = new UserService();
+
+        //查询停车记录
+        StopRecordingQueryParameter parameter = new StopRecordingQueryParameter();
+        parameter.setUserid(1L);
+        parameter.setGarageid(1L);
+        parameter.setStatus(1);
+
+        List<StopRecording> list = userService.queryStopRecodingList(parameter);
+    }
+
+    public String getDateDiff4Chinese(long diff) {
+        long nd = 1000 * 24 * 60 * 60;
+        long nh = 1000 * 60 * 60;
+        long nm = 1000 * 60;
+        long ns = 1000 ;
+        // 计算差多少天
+        long day = diff / nd;
+        // 计算差多少小时
+        long hour = diff % nd / nh;
+        // 计算差多少分钟
+        long min = diff % nd % nh / nm;
+
+        long second = diff % nd % nh % nm / ns;
+
+        // 总计多少小时
+        long totalHour = new Double(Math.ceil(diff / (nh * 1.0d))).longValue();
+
+        StringBuffer sb = new StringBuffer();
+        sb.append(totalHour).append("小时");
+        sb.append(" (");
+        if(day > 0){
+            sb.append(day).append("天");
+        }
+
+        if(hour > 0){
+            sb.append(hour).append("小时");
+        }
+
+        if(min > 0){
+            sb.append(min).append("分钟");
+        }
+
+        sb.append(second).append("秒");
+
+        sb.append(")");
+        return sb.toString();
+    }
+
 }

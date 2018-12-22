@@ -52,6 +52,16 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="停车记录"
+        android:id="@+id/main_stop_recording_btn"
+        android:textSize="20dp"
+        android:background="#1cf718"
+        android:layout_marginTop="20dp"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="返回"
         android:id="@+id/main_back_btn"
         android:textSize="20dp"

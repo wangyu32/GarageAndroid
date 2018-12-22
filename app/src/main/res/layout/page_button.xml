@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+    <TableLayout android:id="@+id/TableLayout1"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:stretchColumns="0,1,2,3,4,5,6,7" android:shrinkColumns="0,1,2,3,4,5,6,7"
+        android:paddingTop="5dip" android:paddingLeft="5dip" android:paddingRight="5dip">
+        <TableRow>
+            <TextView android:text="共" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:textSize="18sp" />
+            <TextView android:id="@+id/total_page_num" android:minWidth="30dp"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textColor="#C71585"
+                android:textSize="18sp" />
+            <TextView android:text="页" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:textSize="18sp" />
+            <TextView android:id="@+id/total_record_num"
+                android:minWidth="60dp" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:textColor="#C71585" android:textSize="18sp" />
+            <TextView android:text="条，" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:textSize="18sp" />
+            <TextView android:text="每页" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:textSize="18sp" />
+            <TextView android:id="@+id/record_num_each_page"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#C71585"
+                android:textSize="18sp" />
+            <TextView android:text="条" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:textSize="18sp" />
+        </TableRow>
+    </TableLayout>
+</merge>
