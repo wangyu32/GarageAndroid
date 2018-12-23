@@ -15,10 +15,11 @@ import garage.wangyu.com.garageandroid.dto.UserComeInDTO;
 import garage.wangyu.com.garageandroid.dto.UserLoginDTO;
 import garage.wangyu.com.garageandroid.dto.UserQueryDTO;
 import garage.wangyu.com.garageandroid.dto.UserRegisterDTO;
+import garage.wangyu.com.garageandroid.entity.Garage;
 import garage.wangyu.com.garageandroid.entity.StopRecording;
 import garage.wangyu.com.garageandroid.entity.User;
-import garage.wangyu.com.garageandroid.enums.CarStatusEnum;
 import garage.wangyu.com.garageandroid.parameter.StopRecordingQueryParameter;
+import garage.wangyu.com.garageandroid.response.GarageResponse;
 import garage.wangyu.com.garageandroid.util.HttpUtils;
 import garage.wangyu.com.garageandroid.util.PropertiesUtils;
 
@@ -27,29 +28,54 @@ public class UserService {
     //车库ID
     public static Long GARAGE_ID = Long.valueOf(PropertiesUtils.getProperties("garageId"));
 
-    //服务地址
+    //基础服务地址
     public static String SERVICE_URL = PropertiesUtils.getProperties("serviceUrl");
 
+    //车库服务地址
+    public static String GARAGE_SERVICE_URL = null;
+
     //用户注册
-    public static String REGISTER = SERVICE_URL + "/user/register";
+    public static String REGISTER = GARAGE_SERVICE_URL + "/user/register";
 
     //用户登录
-    public static String LOGIN = SERVICE_URL + "/user/login";
+    public static String LOGIN = GARAGE_SERVICE_URL + "/user/login";
 
     //修改密码
-    public static String CHANGE_PASSWORD = SERVICE_URL + "/user/changePassword";
+    public static String CHANGE_PASSWORD = GARAGE_SERVICE_URL + "/user/changePassword";
 
     //根据手机号查询用户
-    public static String GET_USER_BY_PHONE = SERVICE_URL + "/user/getUserByPhone";
+    public static String GET_USER_BY_PHONE = GARAGE_SERVICE_URL + "/user/getUserByPhone";
 
     //入库二维码
-    public static String COME_IN_QR_CODE = SERVICE_URL + "/garage/comein";
+    public static String COME_IN_QR_CODE = GARAGE_SERVICE_URL + "/garage/comein";
 
     //出库二维码
-    public static String COME_OUT_QR_CODE = SERVICE_URL + "/garage/comeout";
+    public static String COME_OUT_QR_CODE = GARAGE_SERVICE_URL + "/garage/comeout";
 
     //出库二维码
-    public static String STOP_RECORDING = SERVICE_URL + "/garage/queryStopRecording";
+    public static String STOP_RECORDING = GARAGE_SERVICE_URL + "/garage/queryStopRecording";
+
+    static {
+        //http://localhost:8080/garage/garage/query?id=1
+    }
+
+    public void init(){
+        try {
+            String json = HttpUtils.get(SERVICE_URL + "/garage/query?id=" + GARAGE_ID);
+            GarageResponse response = JSON.parseObject(json, GarageResponse.class);
+            Garage garage = response.getGarage();
+            GARAGE_SERVICE_URL = "http://" + garage.getServerIp() + ":" + garage.getServerPort() + "/garage";
+            REGISTER = GARAGE_SERVICE_URL + "/user/register";
+            LOGIN = GARAGE_SERVICE_URL + "/user/login";
+            CHANGE_PASSWORD = GARAGE_SERVICE_URL + "/user/changePassword";
+            GET_USER_BY_PHONE = GARAGE_SERVICE_URL + "/user/getUserByPhone";
+            COME_IN_QR_CODE = GARAGE_SERVICE_URL + "/garage/comein";
+            COME_OUT_QR_CODE = GARAGE_SERVICE_URL + "/garage/comeout";
+            STOP_RECORDING = GARAGE_SERVICE_URL + "/garage/queryStopRecording";
+        } catch (Exception e){
+            throw new RuntimeException("车库不存在");
+        }
+    }
 
     /**
      * 获取车库ID
