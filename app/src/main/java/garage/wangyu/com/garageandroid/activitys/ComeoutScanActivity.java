@@ -25,8 +25,10 @@ import garage.wangyu.com.garageandroid.constants.Constant;
 import garage.wangyu.com.garageandroid.dto.UserComeInDTO;
 import garage.wangyu.com.garageandroid.entity.StopRecording;
 import garage.wangyu.com.garageandroid.entity.User;
+import garage.wangyu.com.garageandroid.result.ComeinoutResult;
 import garage.wangyu.com.garageandroid.util.HttpUtils;
 import garage.wangyu.com.garageandroid.util.NullUtil;
+import garage.wangyu.com.garageandroid.vo.ComeinoutVO;
 
 /**
  * 出库扫描
@@ -107,11 +109,14 @@ public class ComeoutScanActivity extends BaseActivity implements View.OnClickLis
                 dto.setUserId(user.getId());
 
                 String json = HttpUtils.postJson(url, JSON.toJSONString(dto));
-                result = JSON.parseObject(json, Result.class);
+//                result = JSON.parseObject(json, Result.class);
+                ComeinoutResult comeinoutResult = JSON.parseObject(json, ComeinoutResult.class);
                 DateFormat formator = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 if(result.isSuccess()){
                     //将扫描出的信息显示出来
-                    StopRecording stopRedcording = userService.convertJSONObjectToStopRecording((JSONObject)result.getData());
+//                    StopRecording stopRedcording = userService.convertJSONObjectToStopRecording((JSONObject)result.getData());
+                    ComeinoutVO comeinoutVO = comeinoutResult.getData();
+                    StopRecording stopRedcording = comeinoutVO.getStopRecording();
 
                     StringBuffer sb = new StringBuffer();
                     sb.append("出库状态：").append("出库成功").append("\n");

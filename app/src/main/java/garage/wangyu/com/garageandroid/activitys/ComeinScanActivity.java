@@ -25,8 +25,10 @@ import garage.wangyu.com.garageandroid.constants.Constant;
 import garage.wangyu.com.garageandroid.dto.UserComeInDTO;
 import garage.wangyu.com.garageandroid.entity.StopRecording;
 import garage.wangyu.com.garageandroid.entity.User;
+import garage.wangyu.com.garageandroid.result.ComeinoutResult;
 import garage.wangyu.com.garageandroid.util.HttpUtils;
 import garage.wangyu.com.garageandroid.util.NullUtil;
+import garage.wangyu.com.garageandroid.vo.ComeinoutVO;
 
 /**
  * 入库扫描
@@ -107,11 +109,13 @@ public class ComeinScanActivity extends BaseActivity implements View.OnClickList
                 dto.setUserId(user.getId());
 
                 String json = HttpUtils.postJson(url, JSON.toJSONString(dto));
-                result = JSON.parseObject(json, Result.class);
+                ComeinoutResult comeinoutResult = JSON.parseObject(json, ComeinoutResult.class);
                 DateFormat formator = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 if(result.isSuccess()){
                     //将扫描出的信息显示出来
-                    StopRecording stopRedcording = userService.convertJSONObjectToStopRecording((JSONObject)result.getData());
+//                    StopRecording stopRedcording = userService.convertJSONObjectToStopRecording((JSONObject)result.getData());
+                    ComeinoutVO comeinoutVO = comeinoutResult.getData();
+                    StopRecording stopRedcording = comeinoutVO.getStopRecording(); //userService.convertJSONObjectToStopRecording((JSONObject)result.getData());
                     StringBuffer sb = new StringBuffer();
                     sb.append("入库状态：").append("入库成功").append("\n");
                     sb.append("用户姓名：").append(user.getName()).append("\n");
