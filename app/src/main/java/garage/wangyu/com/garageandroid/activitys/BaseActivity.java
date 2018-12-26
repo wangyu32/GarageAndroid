@@ -13,7 +13,7 @@ public class BaseActivity extends AppCompatActivity {
 
     protected Handler handler = new Handler();
 
-    protected UserService userService = new UserService();
+    protected UserService userService = UserService.getInstance();
 
     protected SharedPreferences login_sp;
 

@@ -22,8 +22,6 @@ public class StopRecordingAdapter extends BaseAdapter {
 
     private List<StopRecording> stopRecordingsList;
 
-    private UserService userService;
-
     private DateFormat formator = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
     public StopRecordingAdapter() {
@@ -31,9 +29,8 @@ public class StopRecordingAdapter extends BaseAdapter {
 
     public StopRecordingAdapter(Context context, List<StopRecording> stopRecordingsList) {
         this.mContext = context;
-        mLayoutInflater = LayoutInflater.from(context);
         this.stopRecordingsList = stopRecordingsList;
-        userService = new UserService();
+        mLayoutInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -89,7 +86,7 @@ public class StopRecordingAdapter extends BaseAdapter {
         }
 
         if (stopRecording.getTotaltime() != null) {
-            holder.tvTotal.setText("停车时间：" + userService.getDateDiff4Chinese(stopRecording.getTotaltime() * 1000));
+            holder.tvTotal.setText("停车时间：" + UserService.getInstance().getDateDiff4Chinese(stopRecording.getTotaltime() * 1000));
         } else {
             holder.tvTotal.setText("停车时间：");
         }

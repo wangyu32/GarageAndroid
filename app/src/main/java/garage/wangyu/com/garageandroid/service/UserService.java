@@ -16,10 +16,12 @@ import garage.wangyu.com.garageandroid.dto.UserLoginDTO;
 import garage.wangyu.com.garageandroid.dto.UserQueryDTO;
 import garage.wangyu.com.garageandroid.dto.UserRegisterDTO;
 import garage.wangyu.com.garageandroid.entity.Garage;
+import garage.wangyu.com.garageandroid.entity.GarageItem;
 import garage.wangyu.com.garageandroid.entity.StopRecording;
 import garage.wangyu.com.garageandroid.entity.User;
 import garage.wangyu.com.garageandroid.parameter.StopRecordingQueryParameter;
 import garage.wangyu.com.garageandroid.response.GarageResponse;
+import garage.wangyu.com.garageandroid.result.GarageItemsResult;
 import garage.wangyu.com.garageandroid.util.HttpUtils;
 import garage.wangyu.com.garageandroid.util.PropertiesUtils;
 
@@ -55,6 +57,20 @@ public class UserService {
     //出库二维码
     public static String STOP_RECORDING = GARAGE_SERVICE_URL + "/garage/queryStopRecording";
 
+    //出库二维码
+    public static String QUERY_ALL_GARAGE_ITEMS = GARAGE_SERVICE_URL + "/garage/queryAllGarageItem";
+
+    private UserService(){}
+
+    private static UserService instacne;
+
+    public static UserService getInstance(){
+        if(instacne == null){
+            instacne = new UserService();
+        }
+        return instacne;
+    }
+
     static {
         //http://localhost:8080/garage/garage/query?id=1
     }
@@ -72,6 +88,7 @@ public class UserService {
             COME_IN_QR_CODE = GARAGE_SERVICE_URL + "/garage/comein";
             COME_OUT_QR_CODE = GARAGE_SERVICE_URL + "/garage/comeout";
             STOP_RECORDING = GARAGE_SERVICE_URL + "/garage/queryStopRecording";
+            QUERY_ALL_GARAGE_ITEMS = GARAGE_SERVICE_URL + "/garage/queryAllGarageItem";
         } catch (Exception e){
             throw new RuntimeException("车库不存在");
         }
@@ -256,16 +273,17 @@ public class UserService {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        UserService userService = new UserService();
 
-        //查询停车记录
-        StopRecordingQueryParameter parameter = new StopRecordingQueryParameter();
-        parameter.setUserid(1L);
-        parameter.setGarageid(1L);
-        parameter.setStatus(1);
-
-        List<StopRecording> list = userService.queryStopRecodingList(parameter);
+    public List<GarageItem> queryAllGarageItems(Long garageid) throws Exception{
+        try {
+//            String url = "http://localhost:8081/garage/garage/queryAllGarageItem?garageid=1";
+            String url = QUERY_ALL_GARAGE_ITEMS + "?garageid=" + garageid;
+            String json = HttpUtils.get(url);
+            GarageItemsResult result = JSON.parseObject(json, GarageItemsResult.class);
+            return result.getData();
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
     public String getDateDiff4Chinese(long diff) {
@@ -304,6 +322,18 @@ public class UserService {
 
         sb.append(")");
         return sb.toString();
+    }
+
+    public static void main(String[] args) throws Exception {
+        UserService userService = new UserService();
+
+        //查询停车记录
+        StopRecordingQueryParameter parameter = new StopRecordingQueryParameter();
+        parameter.setUserid(1L);
+        parameter.setGarageid(1L);
+        parameter.setStatus(1);
+
+        List<StopRecording> list = userService.queryStopRecodingList(parameter);
     }
 
 }

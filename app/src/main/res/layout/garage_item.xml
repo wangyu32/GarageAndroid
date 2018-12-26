@@ -4,7 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
+    android:padding="3dp"
     >
+
+    <!--
 
     <ImageView
         android:id="@+id/iv_g_2"
@@ -20,6 +23,22 @@
         android:background="@color/colorBlack"
 
         />
+-->
+    <TextView
+        android:id="@+id/tv_gi_code"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="001"
+        android:layout_margin="1dp"
+        />
+<!--
+    <TextView
+        android:id="@+id/tv_gi_"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        />
+-->
 
 
 </LinearLayout>

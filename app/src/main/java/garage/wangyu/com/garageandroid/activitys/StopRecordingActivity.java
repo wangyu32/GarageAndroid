@@ -1,8 +1,6 @@
 package garage.wangyu.com.garageandroid.activitys;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.HorizontalScrollView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -12,7 +10,6 @@ import com.wangyu.common.Result;
 import java.util.List;
 
 import garage.wangyu.com.garageandroid.adapter.StopRecordingAdapter;
-import garage.wangyu.com.garageandroid.dto.UserComeInDTO;
 import garage.wangyu.com.garageandroid.entity.StopRecording;
 import garage.wangyu.com.garageandroid.entity.User;
 import garage.wangyu.com.garageandroid.enums.CarStatusEnum;
