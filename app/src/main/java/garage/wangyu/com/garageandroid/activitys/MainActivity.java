@@ -19,6 +19,7 @@ import garage.wangyu.com.garageandroid.enums.UserEnum;
  */
 public class MainActivity extends BaseActivity {
 
+    private Button mainGarageButton;  //入库二维码按钮
     private Button mainComeinQrButton;  //入库二维码按钮
     private Button mainComeoutQrButton; //出库二维码按钮
     private Button mainComeinScanButton;    //扫描入库按钮
@@ -53,6 +54,7 @@ public class MainActivity extends BaseActivity {
             e.printStackTrace();
         }
 
+        mainGarageButton = findViewById(R.id.main_garage_btn);
         mainComeinQrButton = findViewById(R.id.main_comein_qr_btn);
         mainComeoutQrButton = findViewById(R.id.main_comeout_qr_btn);
         mainComeinScanButton = findViewById(R.id.main_comein_scan_btn);
@@ -71,6 +73,7 @@ public class MainActivity extends BaseActivity {
 
     public void setListeners() {
         OnClick onClick = new OnClick();
+        mainGarageButton.setOnClickListener(onClick);
         mainComeinQrButton.setOnClickListener(onClick);
         mainComeoutQrButton.setOnClickListener(onClick);
         mainComeinScanButton.setOnClickListener(onClick);
@@ -85,6 +88,9 @@ public class MainActivity extends BaseActivity {
             //跳转到
             Intent intent = null;
             switch (v.getId()) {
+                case R.id.main_garage_btn:
+                    intent = new Intent(MainActivity.this, GarageActivity.class);
+                    break;
                 case R.id.main_comein_qr_btn:
                     intent = new Intent(MainActivity.this, ComeinQrCodeActivity.class);
                     break;

@@ -8,98 +8,56 @@
     android:paddingRight="3dp"
     android:paddingLeft="3dp"
     >
-<!--
+    <TextView
+        android:id="@+id/s_index"
+        android:layout_width="20dp"
+        android:layout_height="40dp"
+        android:text="1"
+        android:layout_margin="1dp"
+        />
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorBlack"
-            android:padding="1dp"
-            >
-
-            <LinearLayout
+        <TableRow>
+            <TextView
+                android:id="@+id/s_intime"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:text="入库：2018-12-22 15:11:22"
+                android:layout_margin="1dp"
+                />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/s_outtime"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:text="出库：2018-12-22 15:11:22"
+                android:layout_margin="1dp"
+                />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/s_total"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="1"
-                >
-
--->
-                <TextView
-                    android:id="@+id/s_index"
-                    android:layout_width="20dp"
-                    android:layout_height="40dp"
-                    android:text="1"
-                    android:layout_margin="1dp"
-                    />
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
-                    <TableRow
-                        >
-                        <TextView
-                            android:id="@+id/s_intime"
-                            android:layout_width="180dp"
-                            android:layout_height="wrap_content"
-                            android:text="入库：2018-12-22 15:11:22"
-                            android:layout_margin="1dp"
-                            />
-                        <TextView
-                            android:id="@+id/s_total"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="停车：5小时"
-                            android:layout_marginLeft="5dp"
-                            android:layout_margin="1dp"
-                            />
-                    </TableRow>
-                    <TableRow
-                        >
-                        <TextView
-                            android:id="@+id/s_outtime"
-                            android:layout_width="180dp"
-                            android:layout_height="wrap_content"
-                            android:text="出库：2018-12-22 15:11:22"
-                            android:layout_margin="1dp"
-                            />
-                        <TextView
-                            android:id="@+id/s_amount"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="计费：10"
-                            android:layout_marginLeft="5dp"
-                            android:layout_margin="1dp"
-                            />
-                    </TableRow>
-                </TableLayout>
-                <!--
-
-
-                <TextView
-                    android:id="@+id/s_outtime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2018-12-22 15:11:22"
-                    android:layout_marginLeft="5dp"
-                    android:background="@color/colorWhite"
-                    android:layout_margin="1dp"
-
-                    />
-
-
-
-
-            </LinearLayout>
-
-
+                android:layout_height="wrap_content"
+                android:text="停车：5小时"
+                android:layout_marginLeft="5dp"
+                android:layout_margin="1dp"
+                />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:id="@+id/s_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="计费：10"
+                android:layout_marginLeft="5dp"
+                android:layout_margin="1dp"
+                />
         </TableRow>
     </TableLayout>
-
-                 -->
-
 
 </LinearLayout>

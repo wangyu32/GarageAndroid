@@ -111,7 +111,7 @@ public class ComeinScanActivity extends BaseActivity implements View.OnClickList
                 String json = HttpUtils.postJson(url, JSON.toJSONString(dto));
                 ComeinoutResult comeinoutResult = JSON.parseObject(json, ComeinoutResult.class);
                 DateFormat formator = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                if(result.isSuccess()){
+                if(comeinoutResult.isSuccess()){
                     //将扫描出的信息显示出来
 //                    StopRecording stopRedcording = userService.convertJSONObjectToStopRecording((JSONObject)result.getData());
                     ComeinoutVO comeinoutVO = comeinoutResult.getData();

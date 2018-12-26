@@ -13,10 +13,20 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="车位分布"
+        android:id="@+id/main_garage_btn"
+        android:textSize="20dp"
+        android:background="#66CDAA"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="入库二维码"
         android:id="@+id/main_comein_qr_btn"
         android:textSize="20dp"
         android:background="#556B2F"
+        android:layout_marginTop="20dp"
         />
 
     <Button
@@ -45,17 +55,17 @@
         android:text="扫描出库"
         android:id="@+id/main_comeout_scan_btn"
         android:textSize="20dp"
-        android:background="#f71818"
+        android:background="#53868B"
         android:layout_marginTop="20dp"
         />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="停车记录"
+        android:text="消费查询"
         android:id="@+id/main_stop_recording_btn"
         android:textSize="20dp"
-        android:background="#1cf718"
+        android:background="#7B68EE"
         android:layout_marginTop="20dp"
         />
 

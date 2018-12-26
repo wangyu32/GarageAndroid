@@ -77,27 +77,27 @@ public class StopRecordingAdapter extends BaseAdapter {
 
         holder.tvIndex.setText((position + 1) + "");
         if (stopRecording.getIntime() != null) {
-            holder.tvIntime.setText("入库：" + formator.format(stopRecording.getIntime()));
+            holder.tvIntime.setText("入库时间：" + formator.format(stopRecording.getIntime()));
         } else {
-            holder.tvIntime.setText("入库：");
+            holder.tvIntime.setText("入库时间：");
         }
 
         if (stopRecording.getOuttime() != null) {
-            holder.tvOuttime.setText("出库：" + formator.format(stopRecording.getOuttime()));
+            holder.tvOuttime.setText("出库时间：" + formator.format(stopRecording.getOuttime()));
         } else {
-            holder.tvOuttime.setText("出库：");
+            holder.tvOuttime.setText("出库时间：");
         }
 
         if (stopRecording.getTotaltime() != null) {
-            holder.tvTotal.setText("计时：" + userService.getDateDiff4Chinese(stopRecording.getTotaltime()));
+            holder.tvTotal.setText("停车时间：" + userService.getDateDiff4Chinese(stopRecording.getTotaltime() * 1000));
         } else {
-            holder.tvTotal.setText("计时：");
+            holder.tvTotal.setText("停车时间：");
         }
 
         if (stopRecording.getAmount() != null) {
-            holder.tvAmount.setText("计费：" + stopRecording.getAmount().toString());
+            holder.tvAmount.setText("停车费用：" + stopRecording.getAmount().toString());
         } else {
-            holder.tvAmount.setText("计费：");
+            holder.tvAmount.setText("停车费用：");
         }
 
         return convertView;

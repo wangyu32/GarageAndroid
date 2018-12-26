@@ -32,7 +32,7 @@ public class User extends Model {
     private String phone;
 
     /**
-     * 类型0-固定;1-临时
+     * 类型0-固定;1-临时；2-管理员
      */
     private Integer type;
 

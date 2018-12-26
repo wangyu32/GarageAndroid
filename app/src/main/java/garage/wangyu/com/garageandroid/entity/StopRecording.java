@@ -50,6 +50,11 @@ public class StopRecording extends Model {
     private Long totaltime;
 
     /**
+     * 单价
+     */
+    private BigDecimal price;
+
+    /**
      * 停车费
      */
     private BigDecimal amount;
@@ -58,6 +63,11 @@ public class StopRecording extends Model {
      * 状态0-入库;1-出库
      */
     private Integer status;
+
+    /**
+     * 车位ID
+     */
+    private Long itemId;
 
     /**
      * 主键ID
@@ -188,6 +198,22 @@ public class StopRecording extends Model {
     }
 
     /**
+     * 单价
+     * @return price 单价
+     */
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    /**
+     * 单价
+     * @param price 单价
+     */
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
+    /**
      * 停车费
      * @return amount 停车费
      */
@@ -217,5 +243,21 @@ public class StopRecording extends Model {
      */
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    /**
+     * 车位ID
+     * @return item_id 车位ID
+     */
+    public Long getItemId() {
+        return itemId;
+    }
+
+    /**
+     * 车位ID
+     * @param itemId 车位ID
+     */
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
     }
 }
