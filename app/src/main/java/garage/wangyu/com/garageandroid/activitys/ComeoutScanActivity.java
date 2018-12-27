@@ -23,6 +23,8 @@ import java.util.Date;
 
 import garage.wangyu.com.garageandroid.constants.Constant;
 import garage.wangyu.com.garageandroid.dto.UserComeInDTO;
+import garage.wangyu.com.garageandroid.entity.GarageItem;
+import garage.wangyu.com.garageandroid.entity.PriceUnit;
 import garage.wangyu.com.garageandroid.entity.StopRecording;
 import garage.wangyu.com.garageandroid.entity.User;
 import garage.wangyu.com.garageandroid.result.ComeinoutResult;
@@ -111,22 +113,25 @@ public class ComeoutScanActivity extends BaseActivity implements View.OnClickLis
                 String json = HttpUtils.postJson(url, JSON.toJSONString(dto));
 //                result = JSON.parseObject(json, Result.class);
                 ComeinoutResult comeinoutResult = JSON.parseObject(json, ComeinoutResult.class);
-                DateFormat formator = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                DateFormat formattor = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                 if(comeinoutResult.isSuccess()){
                     //将扫描出的信息显示出来
-//                    StopRecording stopRedcording = userService.convertJSONObjectToStopRecording((JSONObject)result.getData());
                     ComeinoutVO comeinoutVO = comeinoutResult.getData();
                     StopRecording stopRedcording = comeinoutVO.getStopRecording();
+                    GarageItem garageItem = comeinoutVO.getGarageItem();
+                    PriceUnit priceUnit = comeinoutVO.getPriceUnit();
 
                     StringBuffer sb = new StringBuffer();
                     sb.append("出库状态：").append("出库成功").append("\n");
                     sb.append("用户姓名：").append(user.getName()).append("\n");
                     sb.append("手机号码：").append(user.getPhone()).append("\n");
-                    sb.append("入库时间：").append(formator.format(stopRedcording.getIntime())).append("\n");
-                    sb.append("出库时间：").append(formator.format(stopRedcording.getOuttime())).append("\n");
-                    sb.append("停车时间：").append(userService.getDateDiff4Chinese(stopRedcording.getTotaltime() * 1000)).append("\n");
-                    sb.append("停车费用：").append(stopRedcording.getAmount()).append("元").append("\n");
+                    sb.append("入库时间：").append(formattor.format(stopRedcording.getIntime())).append("\n");
+                    sb.append("出库时间：").append(formattor.format(stopRedcording.getOuttime())).append("\n");
+                    sb.append("停车时间：").append(stopRedcording.getTotaltime()).append(priceUnit.getUname()).append("\n");
+                    sb.append("停车位置：").append(garageItem.getCode()).append("(").append(garageItem.getLevel()).append("层)").append("\n");
+                    sb.append("计费方式：").append(priceUnit.getUname()).append("\n");
                     sb.append("计费单价：").append(stopRedcording.getPrice()).append("元").append("\n");
+                    sb.append("停车费用：").append(stopRedcording.getAmount()).append("元").append("\n");
                     String stopRedcordingView = sb.toString();
                     scanResultTextView.setText(stopRedcordingView);
                 } else {

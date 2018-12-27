@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:padding="3dp"
+    android:padding="2dp"
+    android:background="@drawable/garage_item"
     >
 
     <!--
@@ -25,11 +26,26 @@
         />
 -->
     <TextView
-        android:id="@+id/tv_gi_code"
+        android:id="@+id/tv_gi_code_2"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:text="002"
+        android:textSize="15dp"
+        android:padding="2dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/garage_item"
+        android:layout_margin="1dp"
+        />
+    <TextView
+        android:id="@+id/tv_gi_code_1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
         android:text="001"
+        android:padding="2dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/garage_item"
         android:layout_margin="1dp"
         />
 <!--

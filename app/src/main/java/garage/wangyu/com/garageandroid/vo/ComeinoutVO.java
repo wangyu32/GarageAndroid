@@ -1,10 +1,9 @@
 package garage.wangyu.com.garageandroid.vo;
 
 import garage.wangyu.com.garageandroid.entity.Garage;
+import garage.wangyu.com.garageandroid.entity.GarageItem;
+import garage.wangyu.com.garageandroid.entity.PriceUnit;
 import garage.wangyu.com.garageandroid.entity.StopRecording;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @Description
@@ -16,6 +15,10 @@ public class ComeinoutVO {
     private StopRecording stopRecording;
 
     private Garage garage;
+
+    private GarageItem garageItem;
+
+    private PriceUnit priceUnit;
 
     public StopRecording getStopRecording() {
         return stopRecording;
@@ -31,5 +34,21 @@ public class ComeinoutVO {
 
     public void setGarage(Garage garage) {
         this.garage = garage;
+    }
+
+    public GarageItem getGarageItem() {
+        return garageItem;
+    }
+
+    public void setGarageItem(GarageItem garageItem) {
+        this.garageItem = garageItem;
+    }
+
+    public PriceUnit getPriceUnit() {
+        return priceUnit;
+    }
+
+    public void setPriceUnit(PriceUnit priceUnit) {
+        this.priceUnit = priceUnit;
     }
 }

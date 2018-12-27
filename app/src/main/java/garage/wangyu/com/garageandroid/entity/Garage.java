@@ -40,7 +40,12 @@ public class Garage extends Model {
     private BigDecimal price;
 
     /**
-     * 服务IP
+     * 计费单位ID
+     */
+    private Integer priceUnitId;
+
+    /**
+     * 服务ip
      */
     private String serverIp;
 
@@ -148,6 +153,22 @@ public class Garage extends Model {
      */
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    /**
+     * 计费单位ID
+     * @return price_unit_id 计费单位ID
+     */
+    public Integer getPriceUnitId() {
+        return priceUnitId;
+    }
+
+    /**
+     * 计费单位ID
+     * @param priceUnitId 计费单位ID
+     */
+    public void setPriceUnitId(Integer priceUnitId) {
+        this.priceUnitId = priceUnitId;
     }
 
     /**

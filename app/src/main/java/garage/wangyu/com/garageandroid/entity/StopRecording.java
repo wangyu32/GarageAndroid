@@ -70,6 +70,11 @@ public class StopRecording extends Model {
     private Long itemId;
 
     /**
+     * 计费单位ID
+     */
+    private Integer priceUnitId;
+
+    /**
      * 主键ID
      * @return id 主键ID
      */
@@ -259,5 +264,21 @@ public class StopRecording extends Model {
      */
     public void setItemId(Long itemId) {
         this.itemId = itemId;
+    }
+
+    /**
+     * 计费单位ID
+     * @return price_unit_id 计费单位ID
+     */
+    public Integer getPriceUnitId() {
+        return priceUnitId;
+    }
+
+    /**
+     * 计费单位ID
+     * @param priceUnitId 计费单位ID
+     */
+    public void setPriceUnitId(Integer priceUnitId) {
+        this.priceUnitId = priceUnitId;
     }
 }
