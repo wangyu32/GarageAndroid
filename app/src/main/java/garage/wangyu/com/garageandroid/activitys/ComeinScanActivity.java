@@ -19,7 +19,6 @@ import com.wangyu.common.Result;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import garage.wangyu.com.garageandroid.constants.Constant;
 import garage.wangyu.com.garageandroid.dto.UserComeInDTO;
@@ -59,6 +58,12 @@ public class ComeinScanActivity extends BaseActivity implements View.OnClickList
                 }
             }, 1000);
         }
+
+        if(isDevelop()){
+            //开发模式直接扫描
+            String url = userService.getComeinQrCodeUrl();
+            scanComeIn(url);
+        }
     }
 
     private void initView() {
@@ -97,51 +102,57 @@ public class ComeinScanActivity extends BaseActivity implements View.OnClickList
             Bundle bundle = data.getExtras();
             String url = bundle.getString(Constant.INTENT_EXTRA_KEY_QR_SCAN);
 
-            if(!url.equals(userService.getComeinQrCodeUrl())){
-                scanResultTextView.setText("入库二维码错误");
-                return;
-            }
-
-            String phone = login_sp.getString("USER_NAME", "");
-            try {
-                Result result = userService.getUserByPhone(phone);
-                User user = userService.convertJSONObjectToUser((JSONObject)result.getData());
-                UserComeInDTO dto = new UserComeInDTO();
-                dto.setGarageId(userService.getGarageId());
-                dto.setUserId(user.getId());
-
-                String json = HttpUtils.postJson(url, JSON.toJSONString(dto));
-                ComeinoutResult comeinoutResult = JSON.parseObject(json, ComeinoutResult.class);
-                DateFormat formattor = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                if(comeinoutResult.isSuccess()){
-                    //将扫描出的信息显示出来
-                    ComeinoutVO comeinoutVO = comeinoutResult.getData();
-                    StopRecording stopRedcording = comeinoutVO.getStopRecording();
-                    GarageItem garageItem = comeinoutVO.getGarageItem();
-                    PriceUnit priceUnit = comeinoutVO.getPriceUnit();
-                    StringBuffer sb = new StringBuffer();
-                    sb.append("入库状态：").append("入库成功").append("\n");
-                    sb.append("用户姓名：").append(user.getName()).append("\n");
-                    sb.append("手机号码：").append(user.getPhone()).append("\n");
-                    sb.append("入库时间：").append(formattor.format(stopRedcording.getIntime())).append("\n");
-                    sb.append("停车位置：").append(garageItem.getCode()).append("(").append(garageItem.getLevel()).append("层)").append("\n");
-                    sb.append("计费方式：").append(priceUnit.getUname()).append("\n");
-
-                    String stopRedcordingView = sb.toString();
-                    scanResultTextView.setText(stopRedcordingView);
-                } else {
-                    StringBuffer sb = new StringBuffer();
-                    sb.append("入库状态：").append("入库失败：").append(result.getMessage()).append("\n");
-                    sb.append("用户姓名：").append(user.getName()).append("\n");
-                    sb.append("手机号码：").append(user.getPhone()).append("\n");
-                    scanResultTextView.setText(sb.toString());
-                }
-            } catch (Exception e){
-                Toast.makeText(this, "系统错误", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
-            }
+            scanComeIn(url);
         }
     }
+
+    //扫描入库
+    private void scanComeIn(String url){
+        if(!url.equals(userService.getComeinQrCodeUrl())){
+            scanResultTextView.setText("入库二维码错误");
+            return;
+        }
+
+        String phone = login_sp.getString("USER_NAME", "");
+        try {
+            Result result = userService.getUserByPhone(phone);
+            User user = userService.convertJSONObjectToUser((JSONObject)result.getData());
+            UserComeInDTO dto = new UserComeInDTO();
+            dto.setGarageId(userService.getGarageId());
+            dto.setUserId(user.getId());
+
+            String json = HttpUtils.postJson(url, JSON.toJSONString(dto));
+            ComeinoutResult comeinoutResult = JSON.parseObject(json, ComeinoutResult.class);
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            if(comeinoutResult.isSuccess()){
+                //将扫描出的信息显示出来
+                ComeinoutVO comeinoutVO = comeinoutResult.getData();
+                StopRecording stopRedcording = comeinoutVO.getStopRecording();
+                GarageItem garageItem = comeinoutVO.getGarageItem();
+                PriceUnit priceUnit = comeinoutVO.getPriceUnit();
+                StringBuffer sb = new StringBuffer();
+                sb.append("入库状态：").append("入库成功").append("\n");
+                sb.append("用户姓名：").append(user.getName()).append("\n");
+                sb.append("手机号码：").append(user.getPhone()).append("\n");
+                sb.append("入库时间：").append(formatter.format(stopRedcording.getIntime())).append("\n");
+                sb.append("停车位置：").append(garageItem.getCode()).append("(").append(garageItem.getLevel()).append("层)").append("\n");
+                sb.append("计费方式：").append(priceUnit.getUname()).append("\n");
+
+                String stopRedcordingView = sb.toString();
+                scanResultTextView.setText(stopRedcordingView);
+            } else {
+                StringBuffer sb = new StringBuffer();
+                sb.append("入库状态：").append("入库失败：").append(result.getMessage()).append("\n");
+                sb.append("用户姓名：").append(user.getName()).append("\n");
+                sb.append("手机号码：").append(user.getPhone()).append("\n");
+                scanResultTextView.setText(sb.toString());
+            }
+        } catch (Exception e){
+            Toast.makeText(this, "系统错误：" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

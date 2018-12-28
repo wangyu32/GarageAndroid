@@ -60,6 +60,8 @@ public class UserService {
     //出库二维码
     public static String QUERY_ALL_GARAGE_ITEMS = GARAGE_SERVICE_URL + "/garage/queryAllGarageItem";
 
+    public static boolean isDevelop = false;
+
     private UserService(){}
 
     private static UserService instacne;
@@ -89,6 +91,10 @@ public class UserService {
             COME_OUT_QR_CODE = GARAGE_SERVICE_URL + "/garage/comeout";
             STOP_RECORDING = GARAGE_SERVICE_URL + "/garage/queryStopRecording";
             QUERY_ALL_GARAGE_ITEMS = GARAGE_SERVICE_URL + "/garage/queryAllGarageItem";
+
+            if(!SERVICE_URL.equals(GARAGE_SERVICE_URL)){
+                isDevelop = true;
+            }
         } catch (Exception e){
             throw new RuntimeException("车库不存在");
         }

@@ -19,4 +19,8 @@ public class BaseActivity extends AppCompatActivity {
 
     protected DateFormat dateFormator = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
+    protected boolean isDevelop(){
+        return UserService.isDevelop;
+    }
+
 }

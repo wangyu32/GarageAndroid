@@ -59,6 +59,12 @@ public class ComeoutScanActivity extends BaseActivity implements View.OnClickLis
                 }
             }, 1000);
         }
+
+        if(isDevelop()){
+            //开发模式直接扫描
+            String url = userService.getComeoutQrCodeUrl();
+            scanComeOut(url);
+        }
     }
 
     private void initView() {
@@ -97,54 +103,59 @@ public class ComeoutScanActivity extends BaseActivity implements View.OnClickLis
             Bundle bundle = data.getExtras();
             String url = bundle.getString(Constant.INTENT_EXTRA_KEY_QR_SCAN);
 
-            if(!url.equals(userService.getComeoutQrCodeUrl())){
-                scanResultTextView.setText("出库二维码错误");
-                return;
-            }
+            scanComeOut(url);
+        }
+    }
 
-            String phone = login_sp.getString("USER_NAME", "");
-            try {
-                Result result = userService.getUserByPhone(phone);
-                User user = userService.convertJSONObjectToUser((JSONObject)result.getData());
-                UserComeInDTO dto = new UserComeInDTO();
-                dto.setGarageId(userService.getGarageId());
-                dto.setUserId(user.getId());
+    //扫描出库
+    private void scanComeOut(String url) {
+        if(!url.equals(userService.getComeoutQrCodeUrl())){
+            scanResultTextView.setText("出库二维码错误");
+            return;
+        }
 
-                String json = HttpUtils.postJson(url, JSON.toJSONString(dto));
+        String phone = login_sp.getString("USER_NAME", "");
+        try {
+            Result result = userService.getUserByPhone(phone);
+            User user = userService.convertJSONObjectToUser((JSONObject)result.getData());
+            UserComeInDTO dto = new UserComeInDTO();
+            dto.setGarageId(userService.getGarageId());
+            dto.setUserId(user.getId());
+
+            String json = HttpUtils.postJson(url, JSON.toJSONString(dto));
 //                result = JSON.parseObject(json, Result.class);
-                ComeinoutResult comeinoutResult = JSON.parseObject(json, ComeinoutResult.class);
-                DateFormat formattor = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                if(comeinoutResult.isSuccess()){
-                    //将扫描出的信息显示出来
-                    ComeinoutVO comeinoutVO = comeinoutResult.getData();
-                    StopRecording stopRedcording = comeinoutVO.getStopRecording();
-                    GarageItem garageItem = comeinoutVO.getGarageItem();
-                    PriceUnit priceUnit = comeinoutVO.getPriceUnit();
+            ComeinoutResult comeinoutResult = JSON.parseObject(json, ComeinoutResult.class);
+            DateFormat formattor = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            if(comeinoutResult.isSuccess()){
+                //将扫描出的信息显示出来
+                ComeinoutVO comeinoutVO = comeinoutResult.getData();
+                StopRecording stopRedcording = comeinoutVO.getStopRecording();
+                GarageItem garageItem = comeinoutVO.getGarageItem();
+                PriceUnit priceUnit = comeinoutVO.getPriceUnit();
 
-                    StringBuffer sb = new StringBuffer();
-                    sb.append("出库状态：").append("出库成功").append("\n");
-                    sb.append("用户姓名：").append(user.getName()).append("\n");
-                    sb.append("手机号码：").append(user.getPhone()).append("\n");
-                    sb.append("入库时间：").append(formattor.format(stopRedcording.getIntime())).append("\n");
-                    sb.append("出库时间：").append(formattor.format(stopRedcording.getOuttime())).append("\n");
-                    sb.append("停车时间：").append(stopRedcording.getTotaltime()).append(priceUnit.getUname()).append("\n");
-                    sb.append("停车位置：").append(garageItem.getCode()).append("(").append(garageItem.getLevel()).append("层)").append("\n");
-                    sb.append("计费方式：").append(priceUnit.getUname()).append("\n");
-                    sb.append("计费单价：").append(stopRedcording.getPrice()).append("元").append("\n");
-                    sb.append("停车费用：").append(stopRedcording.getAmount()).append("元").append("\n");
-                    String stopRedcordingView = sb.toString();
-                    scanResultTextView.setText(stopRedcordingView);
-                } else {
-                    StringBuffer sb = new StringBuffer();
-                    sb.append("出库状态：").append("出库失败：").append(result.getMessage()).append("\n");
-                    sb.append("用户姓名：").append(user.getName()).append("\n");
-                    sb.append("手机号码：").append(user.getPhone()).append("\n");
-                    scanResultTextView.setText(sb.toString());
-                }
-            } catch (Exception e){
-                Toast.makeText(this, "系统错误", Toast.LENGTH_SHORT).show();
-                e.printStackTrace();
+                StringBuffer sb = new StringBuffer();
+                sb.append("出库状态：").append("出库成功").append("\n");
+                sb.append("用户姓名：").append(user.getName()).append("\n");
+                sb.append("手机号码：").append(user.getPhone()).append("\n");
+                sb.append("入库时间：").append(formattor.format(stopRedcording.getIntime())).append("\n");
+                sb.append("出库时间：").append(formattor.format(stopRedcording.getOuttime())).append("\n");
+                sb.append("停车时间：").append(stopRedcording.getTotaltime()).append(priceUnit.getUname()).append("\n");
+                sb.append("停车位置：").append(garageItem.getCode()).append("(").append(garageItem.getLevel()).append("层)").append("\n");
+                sb.append("计费方式：").append(priceUnit.getUname()).append("\n");
+                sb.append("计费单价：").append(stopRedcording.getPrice()).append("元").append("\n");
+                sb.append("停车费用：").append(stopRedcording.getAmount()).append("元").append("\n");
+                String stopRedcordingView = sb.toString();
+                scanResultTextView.setText(stopRedcordingView);
+            } else {
+                StringBuffer sb = new StringBuffer();
+                sb.append("出库状态：").append("出库失败：").append(result.getMessage()).append("\n");
+                sb.append("用户姓名：").append(user.getName()).append("\n");
+                sb.append("手机号码：").append(user.getPhone()).append("\n");
+                scanResultTextView.setText(sb.toString());
             }
+        } catch (Exception e){
+            Toast.makeText(this, "系统错误", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 
