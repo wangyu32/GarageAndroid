@@ -12,56 +12,56 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="车位分布"
+        android:layout_height="@dimen/main_btn_height"
         android:id="@+id/main_garage_btn"
+        android:text="车位分布"
         android:textSize="20dp"
         android:background="#66CDAA"
         />
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/main_btn_height"
         android:text="入库二维码"
         android:id="@+id/main_comein_qr_btn"
         android:textSize="20dp"
         android:background="#556B2F"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/main_btn_marginTop"
         />
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/main_btn_height"
         android:text="出库二维码"
         android:id="@+id/main_comeout_qr_btn"
         android:textSize="20dp"
         android:background="#CDB7B5"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/main_btn_marginTop"
         />
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/main_btn_height"
         android:text="扫描入库"
         android:id="@+id/main_comein_scan_btn"
         android:textSize="20dp"
         android:background="#1cf718"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/main_btn_marginTop"
         />
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/main_btn_height"
         android:text="扫描出库"
         android:id="@+id/main_comeout_scan_btn"
         android:textSize="20dp"
         android:background="#53868B"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/main_btn_marginTop"
         />
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/main_btn_height"
         android:text="消费查询"
         android:id="@+id/main_stop_recording_btn"
         android:textSize="20dp"
@@ -71,12 +71,22 @@
 
     <Button
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/main_btn_height"
+        android:text="我的车位"
+        android:id="@+id/main_my_garage_item_btn"
+        android:textSize="20dp"
+        android:background="#987654"
+        android:layout_marginTop="20dp"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_btn_height"
         android:text="返回"
         android:id="@+id/main_back_btn"
         android:textSize="20dp"
         android:background="#f71818"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/main_btn_marginTop"
         />
 
 </LinearLayout>

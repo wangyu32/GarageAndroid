@@ -13,7 +13,7 @@ public class GarageActivity extends BaseActivity {
 
     private GridView gridView;
 
-    private GarageAdapter garageActivity;
+    private GarageAdapter garageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +24,8 @@ public class GarageActivity extends BaseActivity {
 
         try {
             List<GarageItem> list = userService.queryAllGarageItems(userService.getGarageId());
-            this.garageActivity = new GarageAdapter(GarageActivity.this, list);
-            gridView.setAdapter(garageActivity);
+            this.garageAdapter = new GarageAdapter(GarageActivity.this, list, null, true);
+            gridView.setAdapter(garageAdapter);
         } catch (Exception e){
             Toast.makeText(this, "系统错误", Toast.LENGTH_SHORT).show();
             e.printStackTrace();

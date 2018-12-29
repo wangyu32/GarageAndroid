@@ -11,8 +11,14 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSONObject;
 import com.wangyu.common.Result;
 
+import java.util.List;
+
+import garage.wangyu.com.garageandroid.entity.StopRecording;
 import garage.wangyu.com.garageandroid.entity.User;
+import garage.wangyu.com.garageandroid.enums.CarStatusEnum;
 import garage.wangyu.com.garageandroid.enums.UserEnum;
+import garage.wangyu.com.garageandroid.service.UserService;
+import garage.wangyu.com.garageandroid.util.NullUtil;
 
 /**
  * 主页：入库码，出库码，扫描入库，扫描出库
@@ -24,8 +30,9 @@ public class MainActivity extends BaseActivity {
     private Button mainComeoutQrButton; //出库二维码按钮
     private Button mainComeinScanButton;    //扫描入库按钮
     private Button mainComeoutScanButton;   //扫描出库按钮
+    private Button mainStopRecordingButton;      //消费查询
+    private Button mainMyGarageItemButton;      //我的车位
     private Button mainBackButton;      //返回按钮
-    private Button mainStopRecordingButton;      //返回按钮
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +66,9 @@ public class MainActivity extends BaseActivity {
         mainComeoutQrButton = findViewById(R.id.main_comeout_qr_btn);
         mainComeinScanButton = findViewById(R.id.main_comein_scan_btn);
         mainComeoutScanButton = findViewById(R.id.main_comeout_scan_btn);
-        mainBackButton = findViewById(R.id.main_back_btn);
         mainStopRecordingButton = findViewById(R.id.main_stop_recording_btn);
+        mainMyGarageItemButton = findViewById(R.id.main_my_garage_item_btn);
+        mainBackButton = findViewById(R.id.main_back_btn);
 
         setListeners();
 
@@ -78,8 +86,9 @@ public class MainActivity extends BaseActivity {
         mainComeoutQrButton.setOnClickListener(onClick);
         mainComeinScanButton.setOnClickListener(onClick);
         mainComeoutScanButton.setOnClickListener(onClick);
-        mainBackButton.setOnClickListener(onClick);
         mainStopRecordingButton.setOnClickListener(onClick);
+        mainMyGarageItemButton.setOnClickListener(onClick);
+        mainBackButton.setOnClickListener(onClick);
     }
 
     public class OnClick implements View.OnClickListener {
@@ -103,15 +112,43 @@ public class MainActivity extends BaseActivity {
                 case R.id.main_comeout_scan_btn:
                     intent = new Intent(MainActivity.this, ComeoutScanActivity.class);
                     break;
-                case R.id.main_back_btn:
-                    intent = new Intent(MainActivity.this, LoginActivity.class);
-                    break;
                 case R.id.main_stop_recording_btn:
                     intent = new Intent(MainActivity.this, StopRecordingActivity.class);
                     break;
+                case R.id.main_my_garage_item_btn:
+                    boolean isComeIn = isUserComein();
+                    if(isComeIn){
+                        intent = new Intent(MainActivity.this, MyGarageItemActivity.class);
+                    } else {
+                        Toast.makeText(MainActivity.this, "您没有停车入库，无法查看停车位", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case R.id.main_back_btn:
+                    intent = new Intent(MainActivity.this, LoginActivity.class);
+                    break;
             }
-            startActivity(intent);
+
+            if(intent != null){
+                startActivity(intent);
+            }
         }
+    }
+
+    private boolean isUserComein() {
+        //查看自己的车位分布
+        User user = UserService.getInstance().getLoginUser();
+        Long userId = user.getId();
+        Long garageid = UserService.getInstance().getGarageId();
+        try {
+            List<StopRecording> stopList =  UserService.getInstance().queryStopRecodingList(userId, garageid, CarStatusEnum.COME_IN.getValue());
+            if(NullUtil.notNull(stopList)){
+                return true;
+            }
+        } catch (Exception e){
+            Toast.makeText(this, "系统错误", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override

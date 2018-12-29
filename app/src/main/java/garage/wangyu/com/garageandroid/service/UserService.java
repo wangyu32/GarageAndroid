@@ -62,6 +62,8 @@ public class UserService {
 
     public static boolean isDevelop = false;
 
+    private static User loginUser;
+
     private UserService(){}
 
     private static UserService instacne;
@@ -137,10 +139,21 @@ public class UserService {
         try {
             String json = HttpUtils.postJson(LOGIN, JSON.toJSONString(dto));
             Result result = JSON.parseObject(json, Result.class);
+
+            if(result.isSuccess()){
+                String phone = dto.getPhone();
+                Result resultUser = getUserByPhone(phone);
+                User user = convertJSONObjectToUser((JSONObject)resultUser.getData());
+                loginUser = user;//缓存登录用户
+            }
             return result;
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    public User getLoginUser(){
+        return loginUser;
     }
 
     /**
@@ -246,12 +259,26 @@ public class UserService {
             bean.setIntime(jsonObject.getDate("intime"));
             bean.setOuttime(jsonObject.getDate("outtime"));
             bean.setTotaltime(jsonObject.getLong("totaltime"));
-            bean.setStatus(jsonObject.getInteger("status"));
+            bean.setPrice(jsonObject.getBigDecimal("price"));
             bean.setAmount(jsonObject.getBigDecimal("amount"));
+            bean.setStatus(jsonObject.getInteger("status"));
+            bean.setItemId(jsonObject.getLong("itemId"));
+            bean.setPriceUnitId(jsonObject.getInteger("priceUnitId"));
             return bean;
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    /**
+     * 查询停车记录
+     */
+    public List<StopRecording> queryStopRecodingList(Long userid, Long garageid, Integer status) throws Exception{
+        StopRecordingQueryParameter parameter = new StopRecordingQueryParameter();
+        parameter.setUserid(userid);
+        parameter.setGarageid(garageid);
+        parameter.setStatus(status);
+        return queryStopRecodingList(parameter);
     }
 
     /**
