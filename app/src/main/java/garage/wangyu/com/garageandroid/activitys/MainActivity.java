@@ -6,6 +6,7 @@ import android.os.StrictMode;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
@@ -74,8 +75,19 @@ public class MainActivity extends BaseActivity {
 
         if (UserEnum.ADMIN != UserEnum.getByCode(userTpye)) {
             //不是管理员，隐藏出库，入库二维码按钮
-            mainComeinQrButton.setVisibility(View.INVISIBLE);//表示隐藏
-            mainComeoutQrButton.setVisibility(View.INVISIBLE);//表示隐藏
+//            mainGarageButton.setVisibility(View.INVISIBLE);//表示隐藏
+//            mainComeinQrButton.setVisibility(View.INVISIBLE);
+//            mainComeoutQrButton.setVisibility(View.INVISIBLE);
+            hiddenButton(mainGarageButton, mainComeinQrButton, mainComeoutQrButton);
+        }
+    }
+
+    private void hiddenButton(Button... buttons){
+        for(Button button : buttons){
+            button.setVisibility(View.INVISIBLE);
+            LinearLayout.LayoutParams linearParams =(LinearLayout.LayoutParams) button.getLayoutParams(); //取控件textView当前的布局参数
+            linearParams.height = 0;
+            linearParams.setMargins(0,0,0,0);
         }
     }
 
