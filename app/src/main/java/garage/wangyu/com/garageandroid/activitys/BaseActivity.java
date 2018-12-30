@@ -17,7 +17,7 @@ public class BaseActivity extends AppCompatActivity {
 
     protected SharedPreferences login_sp;
 
-    protected DateFormat dateFormator = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    protected DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     protected boolean isDevelop(){
         return UserService.isDevelop;
