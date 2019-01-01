@@ -38,10 +38,10 @@
         <activity android:name="com.google.zxing.activity.CaptureActivity" />
         <activity android:name=".StopRecordingActivity" />
         <activity android:name=".GarageActivity" />
-        <activity android:name=".MyGarageItemActivity"></activity>
+        <activity android:name=".MyGarageItemActivity" />
         <activity
             android:name=".CollapseActivity"
-            android:theme="@android:style/Theme.Holo.Dialog.MinWidth"></activity>
+            android:theme="@android:style/Theme.Holo.Dialog.MinWidth" />
     </application>
 
 </manifest>

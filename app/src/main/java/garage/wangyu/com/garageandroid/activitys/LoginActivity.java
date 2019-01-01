@@ -23,7 +23,7 @@ public class LoginActivity extends BaseActivity {                 //登录界面
     private Button mRegisterButton;                   //注册按钮
     private Button mLoginButton;                      //登录按钮
 
-    private TextView mChangepwdText;
+    private TextView mChangepwdText;                //修改密码
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
