@@ -33,7 +33,7 @@ import com.google.zxing.view.ViewfinderResultPointCallback;
 
 import java.util.Vector;
 
-import garage.wangyu.com.garageandroid.activitys.R;
+import com.gxc15090111.garageandroid.activitys.R;
 
 
 /**

@@ -38,7 +38,7 @@ import com.google.zxing.camera.CameraManager;
 import java.util.Collection;
 import java.util.HashSet;
 
-import garage.wangyu.com.garageandroid.activitys.R;
+import com.gxc15090111.garageandroid.activitys.R;
 
 
 /**
